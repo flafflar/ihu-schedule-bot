@@ -1,7 +1,14 @@
 knowledge = [
-        ('ψηφιακή σχεδίαση', 'καραμπατζάκης', 'δευτέρα', 16, 20),
-        ('θεωρίες μάθησης', 'τσινάκος', 'τρίτη', 13, 15)
+        ('ψηφιακή σχεδίαση', 'καραμπατζάκη', 'δευτέρα', 16, 20),
+        ('θεωρίες μάθησης', 'τσινάκο', 'τρίτη', 13, 15)
 ]
+
+def and_join(arr):
+    if len(arr) == 0:
+        return ""
+    if len(arr) == 1:
+        return str(arr[0])
+    return ', '.join(arr[:-1]) + ' και ' + arr[-1]
 
 def tokenizer(sentence):
     tokens = []
@@ -26,8 +33,8 @@ stems = [
         Stem('τρίτη', [['τρίτη'], ['τρίτης'], ['τρίτες']]),
         Stem('ψηφιακή σχεδίαση', [['ψηφιακή', 'σχεδίαση'], ['ψηφιακής', 'σχεδίασης']]),
         Stem('θεωρίες μάθησης', [['θεωρίες', 'μάθησης'], ['θεωριών', 'μάθησης']]),
-        Stem('καραμπατζάκης', [['καραμπατζάκης'], ['καραμπατζάκη']]),
-        Stem('τσινάκος', [['τσινάκος'], ['τσινάκου'], ['τσινάκο']]),
+        Stem('καραμπατζάκη', [['καραμπατζάκης'], ['καραμπατζάκη']]),
+        Stem('τσινάκο', [['τσινάκος'], ['τσινάκου'], ['τσινάκο']]),
 ]
 
 def stemmer(token_list):
@@ -78,6 +85,16 @@ def parser(token_list):
 
     return []
 
+def respond(answers):
+    days = ['δευτέρα', 'τρίτη']
+    responses = []
+    for day in days:
+        classes = [x for x in answers if x[2] == day]
+        if len(classes) > 0:
+            class_responses = ["%s με %s στις %s" % (x[0], x[1], x[3]) for x in classes]
+            responses.append("την %s έχουμε " %day + and_join(class_responses))
+    return and_join(responses)
+
 while True:
     sentence = input('> ')
-    print(parser(stemmer(tokenizer(sentence))))
+    print(respond(parser(stemmer(tokenizer(sentence)))))
