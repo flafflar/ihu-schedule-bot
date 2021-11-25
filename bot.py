@@ -106,6 +106,5 @@ def respond(answers):
             responses.append("την %s έχουμε " %day + and_join(class_responses))
     return and_join(responses)
 
-while True:
-    sentence = input('> ')
-    print(respond(parser(stemmer(tokenizer(sentence)))))
+def answer(question):
+    return respond(parser(stemmer(tokenizer(question))))
