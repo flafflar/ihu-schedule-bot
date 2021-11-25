@@ -47,6 +47,37 @@ def stemmer(token_list):
             i += 1
     return stems_list
 
+def parser(token_list):
+    classes = {x[0] for x in knowledge}
+    professors = {x[1] for x in knowledge}
+    days = {'δευτέρα', 'τρίτη'}
+
+    answers = []
+    contains_day = False
+    for day in days:
+        if day in token_list:
+            answers += [x for x in knowledge if x[2] == day]
+            contains_day = True
+    if not contains_day:
+        answers = knowledge
+
+    contains_class = False
+    for clas in classes:
+        if clas in token_list:
+            answers = [x for x in answers if x[0] == clas]
+            contains_class = True
+
+    contains_professor = False
+    for professor in professors:
+        if professor in token_list:
+            answers = [x for x in answers if x[1] == professor]
+            contains_professor = True
+
+    if contains_day or contains_class or contains_professor:
+        return answers
+
+    return []
+
 while True:
     sentence = input('> ')
-    print(stemmer(tokenizer(sentence)))
+    print(parser(stemmer(tokenizer(sentence))))
