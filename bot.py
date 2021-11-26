@@ -1,3 +1,5 @@
+import unicodedata
+
 knowledge = [
         ('ψηφιακή σχεδίαση', 'καραμπατζάκη', 'δευτέρα', 16, 20),
         ('θεωρίες μάθησης', 'τσινάκο', 'τρίτη', 13, 15),
@@ -53,6 +55,12 @@ stems = [
         Stem('χριστοδουλίδου', [['χριστοδουλίδου']])
 ]
 
+def normalize(word_list):
+    """
+    Removes diacritics from words and converts it to a standard form.
+    """
+    return [unicodedata.normalize('NFD', word).lower().translate({ord('\N{COMBINING ACUTE ACCENT}'): None}) for word in word_list]
+
 def stemmer(token_list):
     stems_list = []
     i = 0
@@ -61,7 +69,7 @@ def stemmer(token_list):
         for stem in stems:
             tokens = token_list[i:i+len(stem.values[0])]
             for value in stem.values:
-                if value == tokens:
+                if normalize(value) == normalize(tokens):
                     stems_list.append(stem.name)
                     found_stem = True
                     i += len(tokens)
