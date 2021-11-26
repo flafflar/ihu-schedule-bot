@@ -115,9 +115,10 @@ def respond(answers):
     for day in days:
         classes = [x for x in answers if x[2] == day]
         if len(classes) > 0:
-            class_responses = ["%s με %s στις %s:00" % (x[0], x[1], x[3]) for x in classes]
-            responses.append("την %s έχουμε " %day + and_join(class_responses))
-    return and_join(responses)
+            class_responses = ["%s με %s στις %s:00" % (x[0], x[1].capitalize(), x[3]) for x in classes]
+            responses.append("την %s έχουμε " % (day.capitalize()) + and_join(class_responses))
+    response = and_join(responses)
+    return response[0].upper() + response[1:]
 
 def answer(question):
     return respond(parser(stemmer(tokenizer(question))))
