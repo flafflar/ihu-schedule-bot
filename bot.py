@@ -22,6 +22,11 @@ def tokenizer(sentence):
             if token != '':
                 tokens.append(token)
                 token = ''
+        elif c in ['.', ',', ';', '!', ':', '(', ')', '-', '«', '»', '\'', '"']:
+            if token != '':
+                tokens.append(token)
+                token = ''
+            tokens.append(c)
         else:
             token += c
     if token != '': tokens.append(token)
